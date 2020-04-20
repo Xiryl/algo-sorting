@@ -1,14 +1,17 @@
 import React from "react";
-import NavBar from "./components/NavBar";
+
+import BottomNavbar from "./components/BottomNavbar";
+import TopNavbar from "./components/TopNavbar";
+import Dashboard from "./containers/Dashboard/Dashboard";
+
 import "./App.css";
 
 function App() {
     return (
         <>
-            <NavBar />
-            <div>
-                <p>Hello</p>
-            </div>
+            <TopNavbar />
+            <Dashboard />
+            <BottomNavbar />
         </>
     );
 }
