@@ -12,7 +12,7 @@ class Dashboard extends Component {
             generatedNumbers: [],
             renderedVerticalBars: [],
             animations: [],
-            arrLenght: 150,
+            arrLenght: 70,
             arrMinValue: 5,
             arrMaxValue: 100,
         };
@@ -51,6 +51,37 @@ class Dashboard extends Component {
         );
     };
 
+    bubblesort = () => {
+        const { generatedNumbers } = this.state;
+        const animations = [];
+        const arr = [...generatedNumbers];
+
+        const len = arr.length;
+        for (let i = 0; i < len - 1; i += 1) {
+            for (let j = 0; j < len - 1 - i; j += 1) {
+                if (arr[j] > arr[j + 1]) {
+                    const tmp = arr[j + 1];
+                    const swap = {
+                        idxSorted: len - 1 - i,
+                        key: tmp,
+                        a: j + 1,
+                        b: j,
+                    };
+                    animations.push(swap);
+                    arr[j + 1] = arr[j];
+                    arr[j] = tmp;
+                }
+            }
+        }
+
+        this.setState(
+            {
+                animations,
+            },
+            () => this.animate()
+        );
+    };
+
     generateNumbers = () => {
         const { arrLenght, arrMaxValue, arrMinValue } = this.state;
         const val = [];
@@ -67,7 +98,7 @@ class Dashboard extends Component {
         );
     };
 
-    generateBars = (swapA, swapB) => {
+    generateBars = (swapA, swapB, idxSorted) => {
         const { generatedNumbers } = this.state;
         let { renderedVerticalBars } = this.state;
 
@@ -77,6 +108,9 @@ class Dashboard extends Component {
                     return (
                         <VerticalBar key={idx} value={val} type="selected" />
                     );
+                }
+                if (idx > idxSorted) {
+                    return <VerticalBar key={idx} value={val} type="sorted" />;
                 }
                 return <VerticalBar key={idx} value={val} />;
             });
@@ -102,11 +136,11 @@ class Dashboard extends Component {
         const { animations, generatedNumbers } = this.state;
 
         for (let i = 0; i < animations.length; i += 1) {
-            await this.delay(5);
-            const { a, b, key } = animations[i];
+            await this.delay(0);
+            const { a, b, key, idxSorted } = animations[i];
             generatedNumbers[a] = generatedNumbers[b];
             generatedNumbers[b] = key;
-            this.generateBars(a, b);
+            this.generateBars(a, b, idxSorted);
         }
     };
 
@@ -119,6 +153,9 @@ class Dashboard extends Component {
                     </button>
                     <button type="button" onClick={this.insertionSort}>
                         Insertion Sort
+                    </button>
+                    <button type="button" onClick={this.bubblesort}>
+                        Bubble Sort
                     </button>
                 </div>
                 <div

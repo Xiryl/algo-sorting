@@ -13,6 +13,13 @@ const verticalBar = (props) => {
             </div>
         );
     }
+    if (type === "sorted") {
+        return (
+            <div className="BarSorted" style={{ height: `${value * 5}px` }}>
+                &nbsp;
+            </div>
+        );
+    }
     return (
         <div className="Bar" style={{ height: `${value * 5}px` }}>
             &nbsp;
