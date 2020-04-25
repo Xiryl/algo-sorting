@@ -1,9 +1,12 @@
 import React, { Component } from "react";
 
+import GithubCorner from "react-github-corners";
 import VerticalBar from "../../components/VerticalBar/VerticalBar";
 
 import insertionSort from "../../algorithms/insertionSort";
 import bubbleSort from "../../algorithms/bubbleSort";
+
+import "react-github-corners/dist/GithubCorner.css";
 
 import "./Dashboard.css";
 
@@ -19,6 +22,10 @@ class Dashboard extends Component {
             arrMinValue: 5,
             arrMaxValue: 100,
         };
+    }
+
+    componentDidMount() {
+        this.generateNumbers();
     }
 
     insertionSort = async () => {
@@ -137,6 +144,8 @@ class Dashboard extends Component {
                         {this.state.renderedVerticalBars}
                     </div>
                 </div>
+
+                <GithubCorner />
             </>
         );
     }

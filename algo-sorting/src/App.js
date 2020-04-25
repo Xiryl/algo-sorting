@@ -1,6 +1,6 @@
 import React from "react";
 
-import BottomNavbar from "./components/BottomNavbar";
+import BottomNavbar from "./components/BottomNavbar/BottomNavbar";
 import TopNavbar from "./components/TopNavbar";
 import Dashboard from "./containers/Dashboard/Dashboard";
 
