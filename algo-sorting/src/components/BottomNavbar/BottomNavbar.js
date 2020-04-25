@@ -9,7 +9,11 @@ const BottomNavbar = () => {
                 className="collapse navbar-collapse justify-content-center"
                 id="navbarNav"
             >
-                <p> hi </p>
+                <p className="text txtCenter">
+                    Sorting Visualizer
+                    <br />
+                    fabio@chiarani.it ~ github.com/Xiryl
+                </p>
             </div>
         </nav>
     );

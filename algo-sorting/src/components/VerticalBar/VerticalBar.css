@@ -5,6 +5,12 @@
 }
 
 .BarSelected{
+    background-color: rgb(255, 44, 244);
+    width: 5px;
+    margin: 0px 2px;
+}
+
+.BarSwapped{
     background-color: rgb(80, 226, 75);
     width: 5px;
     margin: 0px 2px;

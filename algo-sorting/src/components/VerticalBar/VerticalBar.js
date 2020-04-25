@@ -20,6 +20,13 @@ const verticalBar = (props) => {
             </div>
         );
     }
+    if (type === "swapped") {
+        return (
+            <div className="BarSwapped" style={{ height: `${value * 5}px` }}>
+                &nbsp;
+            </div>
+        );
+    }
     return (
         <div className="Bar" style={{ height: `${value * 5}px` }}>
             &nbsp;
