@@ -2,6 +2,9 @@ import React, { Component } from "react";
 
 import VerticalBar from "../../components/VerticalBar/VerticalBar";
 
+import insertionSort from "../../algorithms/insertionSort";
+import bubbleSort from "../../algorithms/bubbleSort";
+
 import "./Dashboard.css";
 
 class Dashboard extends Component {
@@ -18,68 +21,36 @@ class Dashboard extends Component {
         };
     }
 
-    insertionSort = () => {
-        const animations = [];
+    insertionSort = async () => {
         const { generatedNumbers } = this.state;
-        const numbers = [...generatedNumbers];
-
-        const len = numbers.length;
-
-        for (let i = 1; i < len; i += 1) {
-            const key = numbers[i];
-            let j = i - 1;
-
-            while (j >= 0 && numbers[j] > key) {
-                const swap = {
-                    num: numbers[j],
-                    key,
-                    a: j + 1,
-                    b: j,
-                };
-                animations.push(swap);
-                numbers[j + 1] = numbers[j];
-                j -= 1;
+        insertionSort(generatedNumbers).then((animations, err) => {
+            if (err) {
+                // todo: popup an error
             }
-            numbers[j + 1] = key;
-        }
 
-        this.setState(
-            {
-                animations,
-            },
-            () => this.animate()
-        );
+            this.setState(
+                {
+                    animations,
+                },
+                () => this.animate()
+            );
+        });
     };
 
     bubblesort = () => {
         const { generatedNumbers } = this.state;
-        const animations = [];
-        const arr = [...generatedNumbers];
-
-        const len = arr.length;
-        for (let i = 0; i < len - 1; i += 1) {
-            for (let j = 0; j < len - 1 - i; j += 1) {
-                if (arr[j] > arr[j + 1]) {
-                    const tmp = arr[j + 1];
-                    const swap = {
-                        idxSorted: len - 1 - i,
-                        key: tmp,
-                        a: j + 1,
-                        b: j,
-                    };
-                    animations.push(swap);
-                    arr[j + 1] = arr[j];
-                    arr[j] = tmp;
-                }
+        bubbleSort(generatedNumbers).then((animations, err) => {
+            if (err) {
+                // todo: popup an error
             }
-        }
 
-        this.setState(
-            {
-                animations,
-            },
-            () => this.animate()
-        );
+            this.setState(
+                {
+                    animations,
+                },
+                () => this.animate()
+            );
+        });
     };
 
     generateNumbers = () => {
