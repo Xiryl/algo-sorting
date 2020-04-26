@@ -76,7 +76,6 @@ class Dashboard extends Component {
         const { generatedNumbers } = this.state;
         const loc = [...generatedNumbers];
         const anim = await countingSort(loc);
-        console.log("anim", anim);
         this.animateMerge(anim);
     };
 
@@ -359,7 +358,7 @@ class Dashboard extends Component {
                     </div>
                 </div>
 
-                <GithubCorner url="https://github.com/Xiryl" />
+                <GithubCorner url="https://github.com/Xiryl/algo-sorting" />
             </>
         );
     }
