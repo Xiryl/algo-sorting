@@ -7,6 +7,7 @@ import insertionSort from "../../algorithms/insertionSort";
 import bubbleSort from "../../algorithms/bubbleSort";
 import mergeSort from "../../algorithms/mergeSort";
 import quickSort from "../../algorithms/quickSort";
+import countingSort from "../../algorithms/countingSort";
 
 import "react-github-corners/dist/GithubCorner.css";
 
@@ -68,6 +69,15 @@ class Dashboard extends Component {
         const loc = [...generatedNumbers];
         const anim = await quickSort(loc);
         this.animateSorting(anim);
+    };
+
+    countingSort = async () => {
+        this.setState({ enableButtons: false });
+        const { generatedNumbers } = this.state;
+        const loc = [...generatedNumbers];
+        const anim = await countingSort(loc);
+        console.log("anim", anim);
+        this.animateMerge(anim);
     };
 
     animateSorting = async (animations) => {
@@ -189,10 +199,20 @@ class Dashboard extends Component {
         });
     };
 
-    generateBarsMerge = (pos, newVal) => {
+    generateBarsMerge = (type, pos, newVal) => {
         const { generatedNumbers } = this.state;
         let { renderedVerticalBars } = this.state;
 
+        if (type === "comparison") {
+            renderedVerticalBars = generatedNumbers.map((val, idx) => {
+                if (idx === pos || idx === newVal) {
+                    return (
+                        <VerticalBar key={idx} value={newVal} type="selected" />
+                    );
+                }
+                return <VerticalBar key={idx} value={val} />;
+            });
+        }
         renderedVerticalBars = generatedNumbers.map((val, idx) => {
             if (idx === pos) {
                 return <VerticalBar key={idx} value={newVal} type="selected" />;
@@ -217,21 +237,11 @@ class Dashboard extends Component {
 
         for (let i = 0; i < animations.length; i += 1) {
             await this.delay(0);
-            const { val, pos } = animations[i];
-            generatedNumbers[pos] = val;
-            this.generateBarsMerge(pos, val);
-        }
-        this.setState({ enableButtons: true });
-    };
-
-    animateQuick = async (animations) => {
-        const { generatedNumbers } = this.state;
-
-        for (let i = 0; i < animations.length; i += 1) {
-            await this.delay(0);
-            const { val, pos, pivot } = animations[i];
-            generatedNumbers[pos] = val;
-            this.generateBarsQuick(pos, val);
+            const { type, val, pos } = animations[i];
+            if (type === "swap") {
+                generatedNumbers[pos] = val;
+            }
+            this.generateBarsMerge(type, pos, val);
         }
         this.setState({ enableButtons: true });
     };
@@ -278,6 +288,13 @@ class Dashboard extends Component {
                                 >
                                     Quick Sort
                                 </button>
+                                <button
+                                    type="button"
+                                    className="btnSort"
+                                    onClick={this.countingSort}
+                                >
+                                    Counting Sort
+                                </button>
                             </div>
                         ) : (
                             <div>
@@ -320,6 +337,14 @@ class Dashboard extends Component {
                                     disabled
                                 >
                                     Quick Sort
+                                </button>
+                                <button
+                                    type="button"
+                                    className="btnSort"
+                                    onClick={this.countingSort}
+                                    disabled
+                                >
+                                    Counting Sort
                                 </button>
                             </div>
                         )}
