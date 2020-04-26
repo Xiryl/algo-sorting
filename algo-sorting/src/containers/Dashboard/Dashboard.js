@@ -58,9 +58,6 @@ class Dashboard extends Component {
         const { generatedNumbers } = this.state;
         const loc = [...generatedNumbers];
         const anim = await mergeSort(loc);
-        console.log("merge", loc);
-        console.log("anim", anim);
-
         this.animateMerge(anim);
     };
 
@@ -77,7 +74,6 @@ class Dashboard extends Component {
                 const tmp = generatedNumbers[second];
                 generatedNumbers[second] = generatedNumbers[first];
                 generatedNumbers[first] = tmp;
-                console.log(sortedByIndex);
                 this.renderGuiBars(type, first, second, sortedByIndex);
             }
         }
@@ -96,7 +92,7 @@ class Dashboard extends Component {
                         <VerticalBar key={idx} value={val} type="selected" />
                     );
                 }
-                if (idx >= sortedByIndex) {
+                if (idx > sortedByIndex) {
                     return (
                         // this part of array is sorted (bubblesort)
                         <VerticalBar key={idx} value={val} type="sorted" />
@@ -113,7 +109,7 @@ class Dashboard extends Component {
                         <VerticalBar key={idx} value={val} type="swapped" />
                     );
                 }
-                if (idx >= sortedByIndex) {
+                if (idx > sortedByIndex) {
                     return (
                         // this part of array is sorted (bubblesort)
                         <VerticalBar key={idx} value={val} type="sorted" />
