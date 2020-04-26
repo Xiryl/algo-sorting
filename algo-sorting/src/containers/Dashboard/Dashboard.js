@@ -6,6 +6,7 @@ import VerticalBar from "../../components/VerticalBar/VerticalBar";
 import insertionSort from "../../algorithms/insertionSort";
 import bubbleSort from "../../algorithms/bubbleSort";
 import mergeSort from "../../algorithms/mergeSort";
+import quickSort from "../../algorithms/quickSort";
 
 import "react-github-corners/dist/GithubCorner.css";
 
@@ -61,26 +62,34 @@ class Dashboard extends Component {
         this.animateMerge(anim);
     };
 
+    quickSort = async () => {
+        this.setState({ enableButtons: false });
+        const { generatedNumbers } = this.state;
+        const loc = [...generatedNumbers];
+        const anim = await quickSort(loc);
+        this.animateSorting(anim);
+    };
+
     animateSorting = async (animations) => {
         const { generatedNumbers } = this.state;
 
         for (let i = 0; i < animations.length; i += 1) {
             await this.delay(10);
 
-            const { type, first, second, sortedByIndex } = animations[i];
+            const { type, first, second, sortedByIndex, pivot } = animations[i];
             if (type === "comparison") {
                 this.renderGuiBars(type, first, second);
             } else {
                 const tmp = generatedNumbers[second];
                 generatedNumbers[second] = generatedNumbers[first];
                 generatedNumbers[first] = tmp;
-                this.renderGuiBars(type, first, second, sortedByIndex);
+                this.renderGuiBars(type, first, second, sortedByIndex, pivot);
             }
         }
         this.setState({ enableButtons: true });
     };
 
-    renderGuiBars = (type, first, second, sortedByIndex) => {
+    renderGuiBars = (type, first, second, sortedByIndex, pivot) => {
         const { generatedNumbers } = this.state;
         let { renderedVerticalBars } = this.state;
 
@@ -98,6 +107,12 @@ class Dashboard extends Component {
                         <VerticalBar key={idx} value={val} type="sorted" />
                     );
                 }
+                if (idx === pivot) {
+                    return (
+                        // this bar is the pivot (quicksort)
+                        <VerticalBar key={idx} value={val} type="sorted" />
+                    );
+                }
                 // render as normal
                 return <VerticalBar key={idx} value={val} />;
             });
@@ -112,6 +127,12 @@ class Dashboard extends Component {
                 if (idx > sortedByIndex) {
                     return (
                         // this part of array is sorted (bubblesort)
+                        <VerticalBar key={idx} value={val} type="sorted" />
+                    );
+                }
+                if (idx === pivot) {
+                    return (
+                        // this bar is the pivot (quicksort)
                         <VerticalBar key={idx} value={val} type="sorted" />
                     );
                 }
@@ -203,6 +224,18 @@ class Dashboard extends Component {
         this.setState({ enableButtons: true });
     };
 
+    animateQuick = async (animations) => {
+        const { generatedNumbers } = this.state;
+
+        for (let i = 0; i < animations.length; i += 1) {
+            await this.delay(0);
+            const { val, pos, pivot } = animations[i];
+            generatedNumbers[pos] = val;
+            this.generateBarsQuick(pos, val);
+        }
+        this.setState({ enableButtons: true });
+    };
+
     render() {
         return (
             <>
@@ -238,6 +271,13 @@ class Dashboard extends Component {
                                 >
                                     Merge Sort
                                 </button>
+                                <button
+                                    type="button"
+                                    className="btnSort"
+                                    onClick={this.quickSort}
+                                >
+                                    Quick Sort
+                                </button>
                             </div>
                         ) : (
                             <div>
@@ -272,6 +312,14 @@ class Dashboard extends Component {
                                     disabled
                                 >
                                     Merge Sort
+                                </button>
+                                <button
+                                    type="button"
+                                    className="btnSort"
+                                    onClick={this.quickSort}
+                                    disabled
+                                >
+                                    Quick Sort
                                 </button>
                             </div>
                         )}
